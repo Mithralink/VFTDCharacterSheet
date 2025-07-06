@@ -1,4 +1,4 @@
-"""Dice rolls"""
+"""Dice rolls, you filthy animal."""
 import random
 from random import randint
 
