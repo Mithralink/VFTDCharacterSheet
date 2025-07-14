@@ -7,14 +7,14 @@ class Zealot(Character):
     def __init__(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice, spirit_bond=None):
         super().__init__(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, spirit_bond)
 
-        hit_dice = max(self.hit_dice[0], min(4, self.hit_dice[1]))
 
 
         if self.hit_points == "":
-            self.hit_points = hit_dice + self.mods[2]
+            chosen_hit_dice = max(self.hit_dice[0], min(6, self.hit_dice[1]))
+            self.hit_points = chosen_hit_dice + self.mods[2]
             if self.level > 1:
                 for i in range(self.level):
-                    self.hit_points += max(1, 6) + self.mods[2]
+                    self.hit_points += random.randint(1, chosen_hit_dice) + self.mods[2]
 
 
 
