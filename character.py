@@ -110,6 +110,7 @@ class Character:
         self.spirit_bond_description = spirit_bond_choices.get(self.spirit_bond, "Unknown spirit bond.")
 
 
+
     def ability_mod(self, ability_scores):
         """Take ability score input and produce modifier"""
 
@@ -117,8 +118,6 @@ class Character:
         for score in ability_scores:
             modifiers.append(int((score - 10) / 2))
         return modifiers
-
-
 
     def generate_class(self):
         """generate a random class"""

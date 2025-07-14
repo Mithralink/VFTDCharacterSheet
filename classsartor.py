@@ -32,3 +32,20 @@ class Sartor(Character):
         print(f"Spirit Bond: {self.spirit_bond}")
         print(f"Spirit Bond Description: {self.spirit_bond_description}")
 
+    def get_summary(self):
+        return (
+            f"{self.name}, You're a level {self.level} {self.character_race} Sartor!\n"
+            f"You have {self.level}d8 and {self.hit_points} HP\n"
+            f"You have {self.grit} grit and {self.sanity} sanity.\n"
+            f"Your Archetype Features are: \n"
+            f"Your Ability Scores:\n"
+            f"Strength {self.ability_scores[0]} ({self.mods[0]})\n"
+            f"Dexterity {self.ability_scores[1]} ({self.mods[1]})\n"
+            f"Constitution {self.ability_scores[2]} ({self.mods[2]})\n"
+            f"Intelligence {self.ability_scores[3]} ({self.mods[3]})\n"
+            f"Wisdom {self.ability_scores[4]} ({self.mods[4]})\n"
+            f"Charisma {self.ability_scores[5]} ({self.mods[5]})\n"
+            f"Spirit Bond: {self.spirit_bond}\n"
+            f"Spirit Bond Description: {self.spirit_bond_description}"
+        )
+
