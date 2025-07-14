@@ -45,12 +45,21 @@ races = {
         },
 }
 
+spirit_bond_choices = {
+    "Vulkjoran": "Spirits bound to Vulkjornn are souls bound to change, destruction, and building. Alteration and manipulation impact your life with utmost fervor. The world demands to be upended and altered by your passing. Change is by force.",
+    "Korvyran": "Those bound to Korvyre are satisfied only by finality. Remembrance is the key to Absolution, and to forget is to leave the soul hollow. Venture far only with a goal, for meandering is of little substance, unless meandering is the objective.",
+    "Akathian": "Akathian spirits are grounded in the existent, and what is meant to happen. One must be present, in every moment, for the absence of presence is the first step of subjugation. Self improvement is of utmost importance. Change will happen.",
+    "Fean": "The spirit of preservation. The other is the self, and to sustain the world is to sustain your own. Outside improvement is of utmost importance. Virosia must be made better by your passing. Act slowly, act decisively, act only in consideration of the wisdom of others.",
+    "Unbound": "Your way is your own, and your spirit calls to no ideal. None of the Four Spirits demand your utmost attention, and perhaps you pluck from all in equal part, or none.",
+    "Bassyric": "You've welded your spirit with that of an otherworldly creature, one of the Selvedge. This bond is not natural to creatures of Virosia, and comes with aspects unique to every individual. A Bassyric-bonded spirit is necessary to cast Selven magic that stems from Bassyr. A Bassyric bond is most strong to the mind, and certain alien thoughts come into your purview.",
+    "Silean": "Your spirit has been connected with that of a Silean entity.  This bond is not one natural to Virosia, and affects the body more than the spirit. This bond is necessary to cast Selven magic stemming from Silea. In some otherworldly way, your body is more strongly bound to your spirit."
+}
 
 
 class Character:
     """Keep it light, keep it bright, keep it gay"""
     # Create character sheet
-    def __init__(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice):
+    def __init__(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice, spirit_bond):
 
         if level == "":
             level = random.randint(1, 13)
@@ -74,6 +83,11 @@ class Character:
 
             ability_scores = rolled_stats
 
+        if not spirit_bond:
+            self.spirit_bond = random.choice(list(spirit_bond_choices.keys()))
+        else:
+            self.spirit_bond = spirit_bond
+
         self.mods = self.ability_mod(ability_scores)
         mods = self.mods
 
@@ -92,7 +106,8 @@ class Character:
         self.sanity = sanity
         self.grit = grit
         self.hit_dice = races[character_race]["hitdice"]
-
+        self.prof = prof
+        self.spirit_bond_description = spirit_bond_choices.get(self.spirit_bond, "Unknown spirit bond.")
 
 
     def ability_mod(self, ability_scores):

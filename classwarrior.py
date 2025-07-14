@@ -1,11 +1,11 @@
 """Class and Archetypes for the Warrior Class"""
 from character import Character
-
+import random
 
 
 class Warrior(Character):
-    def __init__(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice):
-        super().__init__(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice)
+    def __init__(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice, spirit_bond=None):
+        super().__init__(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, spirit_bond)
 
         hit_dice = max(self.hit_dice[0], min(4, self.hit_dice[1]))
 
@@ -29,7 +29,26 @@ class Warrior(Character):
         print(f"Intelligence {self.ability_scores[3]} ({self.mods[3]})")
         print(f"Wisdom {self.ability_scores[4]} ({self.mods[4]})")
         print(f"Charisma {self.ability_scores[5]} ({self.mods[5]})")
+        print(f"Spirit Bond: {self.spirit_bond}")
+        print(f"Spirit Bond Description: {self.spirit_bond_description}")
 
+
+    def stat_check(self, skill: str):
+        if skill == "strength":
+            return random.randint(1, 20) + self.mods[0] + self.prof
+        elif skill == "dexterity":
+            return random.randint(1, 20) + self.mods[1]
+        elif skill == "constitution":
+            return random.randint(1, 20) + self.mods[2] + self.prof
+        elif skill == "intelligence":   
+            return random.randint(1, 20) + self.mods[3]
+        elif skill == "wisdom":
+            return random.randint(1, 20) + self.mods[4]
+        elif skill == "charisma":
+            return random.randint(1, 20) + self.mods[5]
+        else:
+            raise ValueError("Invalid skill name. Choose from strength, dexterity, constitution, intelligence, wisdom, or charisma.")
+        
 
     class_level_features = {
             "warrior": {
