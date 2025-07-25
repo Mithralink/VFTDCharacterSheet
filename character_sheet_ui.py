@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from main import CharacterCreator  # Assuming your creation logic is in main.py
+from main import CharacterCreator
 
 def create_character():
     name = name_entry.get()
@@ -11,7 +11,7 @@ def create_character():
     except ValueError:
         level = ""
     character_race = race_entry.get().lower()  # Apply .lower() to race input
-    spirit_bond = spirit_bond_entry.get().lower()
+    spirit_bond = spirit_bond_entry.get()
     creator = CharacterCreator()
     character = creator.create_character(
         name, [], level, character_race, character_class, "", "", "", "", "", "", spirit_bond

@@ -27,6 +27,6 @@ class CharacterCreator:
 
 
 
-creation = CharacterCreator()
-warriorman = creation.create_character("wowio", [], "",  "", "", "", "", "", "", "", "", "")
+# creation = CharacterCreator()
+# warriorman = creation.create_character("wowio", [], "",  "", "", "", "", "", "", "", "", "")
 
