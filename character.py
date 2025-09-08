@@ -59,7 +59,7 @@ spirit_bond_choices = {
 class Character:
     """Keep it light, keep it bright, keep it gay"""
     # Create character sheet
-    def __init__(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice, spirit_bond):
+    def __init__(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice, spirit_bond, item_db=None):
 
         if level == "":
             level = random.randint(1, 13)
@@ -108,9 +108,10 @@ class Character:
         self.hit_dice = races[character_race]["hitdice"]
         self.prof = prof
         self.spirit_bond_description = spirit_bond_choices.get(self.spirit_bond, "Unknown spirit bond.")
+        self.item_db = item_db
+        self.inventory = {}
 
-
-
+# ability mod generation
     def ability_mod(self, ability_scores):
         """Take ability score input and produce modifier"""
 
@@ -119,6 +120,8 @@ class Character:
             modifiers.append(int((score - 10) / 2))
         return modifiers
 
+
+# random generation
     def generate_class(self):
         """generate a random class"""
         return list(class_hitdice.keys())[random.randint(0, len(class_hitdice.keys()) - 1)]
@@ -132,6 +135,42 @@ class Character:
         #return the race chosen at random from the dictionary
         return list(races.values())[race_roll]["name"]
 
+
+
+# inventory management
+    def add_item(self, item_name, quantity=1, item_db=None, load=None, durability=None):
+        db = item_db if item_db is not None else self.item_db
+        # If item is in the database, use its info
+        if db is not None and item_name in db:
+            item_info = db[item_name]
+            load_val = item_info["load"]
+            durability_val = item_info["durability"]
+        else:
+            # For custom items, require load and durability to be provided
+            if load is None or durability is None:
+                raise ValueError("Custom items must specify both load and durability.")
+            load_val = load
+            durability_val = durability
+        if item_name not in self.inventory:
+            self.inventory[item_name] = {
+                "quantity": quantity,
+                "load": load_val,
+                "durability": durability_val
+            }
+        else:
+            self.inventory[item_name]["quantity"] += quantity
+
+    def remove_item(self, item_name, quantity=1):
+        if item_name in self.inventory:
+            self.inventory[item_name]["quantity"] -= quantity
+            if self.inventory[item_name]["quantity"] <= 0:
+                del self.inventory[item_name]
+
+    def list_inventory(self):
+        return self.inventory
+
+
+# Summary
     def get_summary(self):
         return (
             f"{self.name}, You're a level {self.level} {self.character_race} {self.character_class}!\n"
@@ -147,6 +186,24 @@ class Character:
             f"Spirit Bond: {self.spirit_bond}\n"
             f"Spirit Bond Description: {self.spirit_bond_description}"
         )
+
+# Convert to dictionary for JSON serialization
+    def to_dict(self):
+            return {
+                "name": self.name,
+                "character_class": self.character_class,
+                "ability_scores": self.ability_scores,
+                "level": self.level,
+                "character_race": self.character_race,
+                "hit_points": self.hit_points,
+                "sanity": self.sanity,
+                "grit": self.grit,
+                "hit_dice": self.hit_dice,
+                "prof": self.prof,
+                "spirit_bond": self.spirit_bond,
+                "spirit_bond_description": self.spirit_bond_description,
+                "inventory": self.inventory,
+            }
 
 
 

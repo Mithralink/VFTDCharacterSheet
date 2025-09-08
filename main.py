@@ -1,4 +1,4 @@
-"""Use of Character sheet stats."""
+"""Use of Character sheet stats, and inventory database loading."""
 
 from character import Character
 from classwarrior import Warrior
@@ -6,6 +6,8 @@ from classrogue import Rogue
 from classsartor import Sartor
 from classzealot import Zealot
 from classdungeoneer import Dungeoneer
+import configparser
+import os
 
 #decides which class to generate a character with
 class CharacterCreator:
@@ -25,8 +27,26 @@ class CharacterCreator:
         else:
             raise ValueError(f"Invalid character type: {character_class}")
 
-
-
 # creation = CharacterCreator()
 # warriorman = creation.create_character("wowio", [], "",  "", "", "", "", "", "", "", "", "")
 
+def load_item_db(config_files):
+    """Load item database from config files."""
+    item_db = {}
+    for file in config_files:
+        config = configparser.ConfigParser()
+        config.read(file)
+        for section in config.sections():
+            item_db[section] = dict(config.items(section))
+    return item_db
+
+config_files = [
+    "configs/config_armor.ini",
+    "configs/config_armor_heavy.ini",
+    "configs/config_armor_light.ini",
+    "configs/config_martial_melee.ini",
+    "configs/config_martial_ranged.ini",
+    "configs/config_simple_melee.ini",
+    "configs/config_simple_ranged.ini"
+]
+item_db = load_item_db(config_files)
