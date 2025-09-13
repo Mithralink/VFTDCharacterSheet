@@ -1,0 +1,34 @@
+{
+    "name": "Testy",
+    "character_class": "Sartor",
+    "ability_scores": [
+        13,
+        12,
+        13,
+        12,
+        6,
+        10
+    ],
+    "level": 4,
+    "character_race": "talii",
+    "hit_points": 26,
+    "sanity": 4,
+    "grit": 3,
+    "hit_dice": [
+        6,
+        8
+    ],
+    "prof": 2,
+    "spirit_bond": "Fean",
+    "spirit_bond_description": "The spirit of preservation. The other is the self, and to sustain the world is to sustain your own. Outside improvement is of utmost importance. Virosia must be made better by your passing. Act slowly, act decisively, act only in consideration of the wisdom of others.",
+    "archetype": "sorcerer",
+    "inventory": {},
+    "notes": {
+        "general": "",
+        "session": "",
+        "allies": "",
+        "enemies": "",
+        "goals": "",
+        "backstory": ""
+    }
+}

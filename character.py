@@ -59,7 +59,7 @@ spirit_bond_choices = {
 class Character:
     """Keep it light, keep it bright, keep it gay"""
     # Create character sheet
-    def __init__(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice, spirit_bond, item_db=None):
+    def __init__(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice, spirit_bond, archetype, item_db=None):
 
         if level == "":
             level = random.randint(1, 13)
@@ -109,6 +109,7 @@ class Character:
         self.prof = prof
         self.spirit_bond_description = spirit_bond_choices.get(self.spirit_bond, "Unknown spirit bond.")
         self.item_db = item_db
+        self.archetype = archetype
         self.inventory = {}
 
 # ability mod generation
@@ -202,6 +203,7 @@ class Character:
                 "prof": self.prof,
                 "spirit_bond": self.spirit_bond,
                 "spirit_bond_description": self.spirit_bond_description,
+                "archetype": self.archetype,
                 "inventory": self.inventory,
             }
 

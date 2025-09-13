@@ -23,17 +23,19 @@ root.tk.call("set_theme", "dark")
 
 
 
-# Main info (Name, Class, Race, Level)
+# Main character info (Name, Class, Race, Level)
 main_info_frame = tk.LabelFrame(root, text="Character Info", padx=8, pady=4)
 main_info_frame.pack(pady=4, fill="x")
 name_label = tk.Label(main_info_frame, text="Name: --")
 name_label.grid(row=0, column=0, sticky="w")
 class_label = tk.Label(main_info_frame, text="Class: --")
 class_label.grid(row=0, column=1, sticky="w", padx=10)
+archetype_label = tk.Label(main_info_frame, text="Archetype: --")
+archetype_label.grid(row=0, column=2, sticky="w", padx=10)
 race_label = tk.Label(main_info_frame, text="Race: --")
-race_label.grid(row=0, column=2, sticky="w", padx=10)
+race_label.grid(row=0, column=3, sticky="w", padx=10)
 level_label = tk.Label(main_info_frame, text="Level: --")
-level_label.grid(row=0, column=3, sticky="w", padx=10)
+level_label.grid(row=0, column=4, sticky="w", padx=10)
 
 # Spirit Bond
 spirit_frame = tk.LabelFrame(root, text="Spirit Bond", padx=8, pady=4)
@@ -42,6 +44,8 @@ spirit_bond_label = tk.Label(spirit_frame, text="Spirit Bond: --")
 spirit_bond_label.pack(anchor="w")
 spirit_desc_label = tk.Label(spirit_frame, text="Spirit Bond Description: --", wraplength=500, justify="left")
 spirit_desc_label.pack(anchor="w")
+
+
 
 # Update function for these boxes
 def update_character_info_boxes(character):
@@ -54,11 +58,9 @@ def update_character_info_boxes(character):
     stat_labels["sanity_label"].config(text=f"{character.sanity}")
     spirit_bond_label.config(text=f"Spirit Bond: {character.spirit_bond}")
     spirit_desc_label.config(text=f"Spirit Bond Description: {character.spirit_bond_description}")
+    archetype_label.config(text=f"Archetype: {character.archetype}")
 
 
-# Create a frame to hold the input fields horizontally and wrap after 5 fields
-input_frame = tk.Frame(root)
-input_frame.pack(pady=10)
 
 # Define dropdown options
 class_options = ["Warrior", "Rogue", "Sartor", "Zealot", "Dungeoneer"]
@@ -66,15 +68,48 @@ race_options = ["Fjoran", "Shaelarae", "Talii", "Human", "Bassyrikin"]
 spirit_bond_options = [
     "Vulkjoran", "Korvyran", "Akathian", "Fean", "Unbound", "Bassyric", "Silean"
 ]
+class_archetypes = {
+    "Warrior": [
+        "barbarian", "caestus", "fighter", "knight", "ward", "pirate", "ranger", "scarsan"
+    ],
+    "Rogue": [
+        "acrobat", "assassin", "bandit", "pirate", "thief", "scarsan"
+    ],
+    "Sartor": [
+        "cometologist ", "doorlock", "elementalist", "maester", "sorcerer", "warlock", "sanctioned sartor"
+    ],
+    "Zealot": [
+        "silean", "crusader", "bassyric", "desert fean", "vulkjoran", "lost akathian", "oracle", "apostle of korvyre"
+    ],
+    "Dungeoneer": [
+        "censerer", "alchemist", "archaeologist", "barber surgeon", "engineer",
+        "expeditioner", "explorer", "field researcher", "scarsan"
+    ],
+}
 
-# Define fields and their entries
+input_frame = tk.Frame(root)
+input_frame.pack(pady=10)
+
+archetype_var = tk.StringVar()
+archetype_entry = ttk.Combobox(input_frame, textvariable=archetype_var, values=[], state="readonly")
+
 fields = [
     ("Name:", tk.Entry(input_frame)),
-    ("Class:", ttk.Combobox(input_frame, values=class_options)),
+    ("Class:", ttk.Combobox(input_frame, values=class_options, state="readonly")),
+    ("Archetype:", archetype_entry),
     ("Level:", tk.Entry(input_frame)),
-    ("Race:", ttk.Combobox(input_frame, values=race_options)),
-    ("Spirit Bond:", ttk.Combobox(input_frame, values=spirit_bond_options)),
+    ("Race:", ttk.Combobox(input_frame, values=race_options, state="readonly")),
+    ("Spirit Bond:", ttk.Combobox(input_frame, values=spirit_bond_options, state="readonly")),
 ]
+
+
+def update_archetype_options(event=None):
+    selected_class = class_entry.get()
+    archetypes = class_archetypes.get(selected_class, [])
+    archetype_entry["values"] = archetypes
+    archetype_var.set("")  # Clear selection
+
+
 
 # Place fields in grid, wrap after 5 fields (2 columns per field: label and entry)
 for i, (label_text, entry) in enumerate(fields):
@@ -86,12 +121,15 @@ for i, (label_text, entry) in enumerate(fields):
 # Assign entry variables for use in create_character
 name_entry = fields[0][1]
 class_entry = fields[1][1]
-level_entry = fields[2][1]
-race_entry = fields[3][1]
-spirit_bond_entry = fields[4][1]
+archetype_entry = fields[2][1]
+level_entry = fields[3][1]
+race_entry = fields[4][1]
+spirit_bond_entry = fields[5][1]
+
+class_entry.bind("<<ComboboxSelected>>", update_archetype_options)
 
 # Sidebar for main actions
-sidebar_frame = tk.Frame(root)
+sidebar_frame = tk.LabelFrame(root, text="Character Creation", padx=8, pady=4)
 sidebar_frame.pack(side="left", fill="y", padx=8, pady=8)
 
 # Create Character button below the input fields
@@ -368,6 +406,7 @@ def create_character():
     if messagebox.askyesno("Confirm", "Are you sure you want to wipe the current character and notes?"):
         name = name_entry.get()
         character_class = class_entry.get()
+        archetype = archetype_entry.get()
         level_str = level_entry.get()
         try:
             level = int(level_str)
@@ -379,6 +418,7 @@ def create_character():
         character = creator.create_character(
             name, [], level, character_race, character_class, "", "", "", "", "", "", spirit_bond
         )
+        character.archetype = archetype
         root.current_character = character # Store for inventory use
         update_character_info_boxes(character)
         update_inventory_display(character)
@@ -419,6 +459,9 @@ def load_character():
         # Restore inventory if present
         if "inventory" in char_data:
             character.inventory = char_data["inventory"]
+        archetype = char_data.get("archetype", "")
+        character.archetype = archetype
+        archetype_entry.set(archetype)
         root.current_character = character
         # Update UI fields
         name_entry.delete(0, tk.END)
@@ -469,6 +512,7 @@ def save_character():
         char_data = character.to_dict()
     else:
         char_data = character.__dict__
+    char_data["archetype"] = getattr(character, "archetype", "")
     char_data["notes"] = {
         "general": general_text.get("1.0", "end-1c"),
         "session": session_text.get("1.0", "end-1c"),

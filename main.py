@@ -11,19 +11,19 @@ import os
 
 #decides which class to generate a character with
 class CharacterCreator:
-    def create_character(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice, spirit_bond=None):
+    def create_character(self, name: str, ability_scores : int, level : int, character_race : str, character_class : str, hit_points: int, mods, sanity, grit, prof, hit_dice, archetype, spirit_bond=None):
         if character_class == "":
             character_class = Character.generate_class(self)
         if character_class.lower() == "warrior":
-            return Warrior(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, spirit_bond)
+            return Warrior(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, archetype, spirit_bond)
         elif character_class.lower() == "rogue":
-            return Rogue(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, spirit_bond)
+            return Rogue(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, archetype, spirit_bond)
         elif character_class.lower() == "sartor":
-            return Sartor(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, spirit_bond)
+            return Sartor(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, archetype, spirit_bond)
         elif character_class.lower() == "zealot":
-            return Zealot(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, spirit_bond)
+            return Zealot(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, archetype, spirit_bond)
         elif character_class.lower() == "dungeoneer":
-            return Dungeoneer(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, spirit_bond)
+            return Dungeoneer(name, ability_scores, level, character_race, character_class, hit_points, mods, sanity, grit, prof, hit_dice, archetype, spirit_bond)
         else:
             raise ValueError(f"Invalid character type: {character_class}")
 
