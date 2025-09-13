@@ -1,0 +1,39 @@
+{
+    "name": "TestSartor",
+    "character_class": "Sartor",
+    "ability_scores": [
+        7,
+        8,
+        12,
+        8,
+        15,
+        9
+    ],
+    "level": 3,
+    "character_race": "human",
+    "hit_points": 18,
+    "sanity": 2,
+    "grit": 3,
+    "hit_dice": [
+        4,
+        8
+    ],
+    "prof": 2,
+    "spirit_bond": "Unbound",
+    "spirit_bond_description": "Your way is your own, and your spirit calls to no ideal. None of the Four Spirits demand your utmost attention, and perhaps you pluck from all in equal part, or none.",
+    "inventory": {
+        "Staff": {
+            "quantity": 1,
+            "load": 2,
+            "durability": 3
+        }
+    },
+    "notes": {
+        "general": "Schmorgus",
+        "session": "",
+        "allies": "",
+        "enemies": "",
+        "goals": "",
+        "backstory": ""
+    }
+}
